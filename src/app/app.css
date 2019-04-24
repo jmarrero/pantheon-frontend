@@ -12,3 +12,13 @@
 .notification-container {
   flex: 0 1 auto;
 }
+
+li {
+  float: left;
+}
+
+a {
+  display: block;
+  padding: 8px;
+  background-color: #dddddd;
+}

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Alert, AlertActionCloseButton, BackgroundImage, BackgroundImageSrc } from '@patternfly/react-core';
+import { TextInput, Label, BackgroundImage, BackgroundImageSrc, Button } from '@patternfly/react-core';
+import { Table, TableHeader, TableBody } from '@patternfly/react-table';
 import '@app/app.css';
 import xs from '@assets/images/pfbg_576.jpg';
 import xs2x from '@assets/images/pfbg_576@2x.jpg';
@@ -7,6 +8,7 @@ import sm from '@assets/images/pfbg_768.jpg';
 import sm2x from '@assets/images/pfbg_768@2x.jpg';
 import lg from '@assets/images/pfbg_1200.jpg';
 import filter from '@assets/images/background-filter.svg';
+import { Redirect } from 'react-router-dom'
 
 const images = {
   [BackgroundImageSrc.xs]: xs,
@@ -17,32 +19,78 @@ const images = {
   [BackgroundImageSrc.filter]: `${filter}#image_overlay`
 };
 
-export default class App extends Component {
+export default class Index extends Component {
   public state = {
-    isShowing: true
+    redirect: false,
+    redirectLocation: '',
+    input: '',
+    columns: ['Name', 'Description', 'Source Type', 'Source Name', 'Upload Time'],
+    data: [{
+      "pant:transientSource": "modules", "jcr:created": 1554823602107, "jcr:createdBy": "admin", "jcr:description": "Red Hat",
+      "name": "red_hat", "sling:resourceType": "pantheon/modules", "jcr:primaryType": "pant:module", "jcr:title": "Red Hat", "pant:transientPath": "modules/Red_Hat"
+    }]
   };
   public render() {
-    const { isShowing } = this.state;
+    const { columns, input } = this.state;
     return (
       <React.Fragment>
         <BackgroundImage src={images} />
         <div className="app-container">
-          {isShowing && (
-            <div className="notification-container">
-              <Alert
-                variant="success"
-                title="Setup Complete"
-                action={<AlertActionCloseButton onClose={this.dismissNotification} />}
-              >
-                You have successfully launched your patternfly starter project.
-              </Alert>
-            </div>
-          )}
+          <div>
+            <Label>Search:
+           <TextInput value={input} id="search" onChange={() => this.getRows(event)} type="text" placeholder="*" />
+            </Label>
+            <Table aria-label="table-header" rows={[]} cells={columns} >
+              <TableHeader />
+            </Table>
+            {this.renderPreview()}
+            {this.state.data.map(data => (
+              <Table aria-label="table-data" key={data.name} rows={[[data["jcr:title"], data["jcr:description"], data["sling:resourceType"], data["pant:transientSource"], data["jcr:created"].toString()]]} cells={columns} >
+                <TableBody onRowClick={() => this.setPreview(data.name)} />
+              </Table>
+            ))}
+          </div>
         </div>
       </React.Fragment>
     );
   }
-  private dismissNotification = () => {
-    this.setState({ isShowing: false });
+
+  private getRows = (event) => {
+    console.log("what do I see? " + event.target.value)
+    this.setState({
+      input: event.target.value
+    }, () => {
+      console.log("Now I get the expected value down " + this.state.input)
+      var backend = "http://localhost:8080/modules.json?search="
+      if (this.state.input != null && this.state.input != "" && this.state.input != "*") {
+        backend = backend + this.state.input
+        console.log(backend)
+      }
+      fetch(backend)
+        .then(response => response.json())
+        .then(responseJSON => this.setState({ data: responseJSON }))
+        .then(() => console.log("JSON string is " + JSON.stringify(this.state.data)))
+    })
   };
+
+
+  private setPreview(name: string) {
+    console.log("what do I when you click ? " + name)
+    this.setState({
+      redirect: true,
+      redirectLocation: name
+    }
+    )
+  };
+
+  renderPreview = () => {
+    if (this.state.redirect) {
+      console.log(this.state.redirect)
+      return window.location.assign("http://localhost:8080/modules/" + this.state.redirectLocation + ".preview");
+    } else {
+      console.log(this.state.redirect)
+      return ""
+    }
+  };
+
 }
