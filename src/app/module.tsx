@@ -20,7 +20,8 @@ const images = {
 
 export default class Module extends Component {
   public state = {
-    redirect: false
+    redirect: false,
+    failedPost: false
   };
   public render() {
     return (
@@ -30,10 +31,10 @@ export default class Module extends Component {
           <div>
             <TextInput id="module-name" value={"Module Name"} />
             <TextInput id="module-description" value="Description" />
-            <input type="file" />
+            <input className="input-file" color="#dddddd" type="file" />
             <div>
               {this.renderRedirect()}
-              <Button onClick={this.setRedirect}>Save</Button>
+              <Button onClick={this.saveModule}>Save</Button>
             </div>
           </div>
         </div>
@@ -41,12 +42,37 @@ export default class Module extends Component {
     );
   }
 
-  setRedirect = () => {
-    this.setState({
-      //save stuff here
-      redirect: true
-    })
+  saveModule(postBody){
+   // "jcr:title"=
+   // name="jcr:description"  
+   // name="asciidoc" type=file
+   // name=":checkinNewVersionableNodes" value="true"/> -->
+   // name="asciidoc@TypeHint" value="nt:file"/> -->
+   // name="sling:resourceType" value="pantheon/modules"/>
+   // name="jcr:primaryType" value="pant:module"/>
+   // name="asciidoc/jcr:content/jcr:mimeType" value="text/x-asciidoc"/>
+
+ const   data = {"jcr:primaryType": 'pant:module',
+                "jcr:title": "Joseph",
+                "jcr:description": "Dance",
+                "sling:resourceType": 'pantheon/modules',
+                "pant:originalName": "",
+                "asciidoc@TypeHint": 'nt:file'}
+
+        fetch('http://localhost:8080/content/modules/', {
+          method: 'post',
+          body: JSON.stringify(data)
+        }).then(response => {
+          if (response.status == 201) {
+            console.log(" Works "+response.status)
+           this.setState({redirect: true})
+          } else {
+            console.log(" Failed "+response.status)
+            this.setState({failedPost: true})
+          }
+        });
   }
+
   renderRedirect = () => {
     if (this.state.redirect) {
       return <Redirect to='/' />
