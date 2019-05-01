@@ -42,7 +42,7 @@ export default class Module extends Component {
     );
   }
 
-  saveModule(postBody){
+  saveModule = (postBody) => {
    // "jcr:title"=
    // name="jcr:description"  
    // name="asciidoc" type=file
