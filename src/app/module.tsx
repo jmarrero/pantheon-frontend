@@ -33,15 +33,15 @@ export default class Module extends Component {
       <React.Fragment>
         <BackgroundImage src={images} />
         <div className="app-container">
+          <div>
+            <TextInput id="module-name" type="text" placeholder="Module Name" value={moduleName} onChange={this.handleTextInputChange1} />
+            <TextInput id="module-description" type="text" placeholder="Module Description" value={moduleDescription} onChange={this.handleTextInputChange2} />
+            <input id="input" className="input-file" color="#dddddd" type="file" onChange={(e) => this.handleFileChange(e.target.files)} />
             <div>
-              <TextInput id="module-name" type="text" placeholder="Module Name" value={moduleName} onChange={this.handleTextInputChange1} />
-              <TextInput id="module-description" type="text" placeholder="Module Description" value={moduleDescription} onChange={this.handleTextInputChange2} />
-              <input id="input" className="input-file" color="#dddddd" type="file" onChange={(e) => this.handleFileChange(e.target.files)} />
-              <div>
-                {this.renderRedirect()}
-                <Button onClick={this.saveModule}>Save</Button>
-              </div>
+              {this.renderRedirect()}
+              <Button onClick={this.saveModule}>Save</Button>
             </div>
+          </div>
         </div>
       </React.Fragment>
     );
@@ -49,7 +49,7 @@ export default class Module extends Component {
 
   handleTextInputChange1 = moduleName => {
     this.setState({ moduleName });
-    console.log("Na " + moduleName)
+    console.log("Name " + moduleName)
 
   };
   handleTextInputChange2 = moduleDescription => {
@@ -58,35 +58,33 @@ export default class Module extends Component {
   };
 
   handleFileChange = selectorFiles => {
-    this.setState({ moduleFile: selectorFiles[0] })
+    this.setState({ moduleFile: selectorFiles })
     console.log(selectorFiles);
   }
 
   saveModule = (postBody) => {
-    console.log("My name is: "+ this.state.moduleName+ " and my desc is " + this.state.moduleDescription +" and my files are "+ this.state.moduleFile)
-    // "jcr:title"=
-    // name="jcr:description"  
-    // name="asciidoc" type=file
-    // name=":checkinNewVersionableNodes" value="true"/> -->
-    // name="asciidoc@TypeHint" value="nt:file"/> -->
-    // name="sling:resourceType" value="pantheon/modules"/>
-    // name="jcr:primaryType" value="pant:module"/>
-    // name="asciidoc/jcr:content/jcr:mimeType" value="text/x-asciidoc"/>
+    console.log("My name is: " + this.state.moduleName + " and my desc is " + this.state.moduleDescription + " and my files are " + this.state.moduleFile)
 
-    const data = {
-      "jcr:primaryType": 'pant:module',
-      "jcr:title": this.state.moduleName,
-      "jcr:description": this.state.moduleDescription,
-      "asciidoc": this.state.moduleFile.name,
-      "sling:resourceType": 'pantheon/modules',
-      "pant:originalName": "??",
-      "asciidoc@TypeHint": 'nt:file',
-      "asciidoc/jcr:content/jcr:mimeType": "text/x-asciidoc"
+
+    const hdrs = {
+      'cache-control': 'no-cache',
+      'Accept': 'application/json'
     }
+    console.log("The file is: " + this.state.moduleFile)
+    const blob = new Blob([this.state.moduleFile[0]])
+    const formData = new FormData();
+    formData.append("jcr:title", this.state.moduleName)
+    formData.append("jcr:description", this.state.moduleDescription)
+    formData.append("sling:resourceType", "pantheon/modules")
+    formData.append("jcr:primaryType", 'pant:module')
+    formData.append("asciidoc@TypeHint", 'nt:file')
+    formData.append("asciidoc/jcr:content/jcr:mimeType", "text/x-asciidoc")
+    formData.append("asciidoc", blob)
 
-    fetch('http://localhost:8080/content/modules/', {
+    fetch('http://localhost:8080/content/modules/' + this.state.moduleName, {
       method: 'post',
-      body: JSON.stringify(data)
+      headers: hdrs,
+      body: formData
     }).then(response => {
       if (response.status == 201) {
         console.log(" Works " + response.status)
