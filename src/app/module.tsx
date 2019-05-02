@@ -22,7 +22,7 @@ export default class Module extends Component {
   public state = {
     moduleName: '',
     moduleDescription: '',
-    moduleFiles: null,
+    moduleFile: File,
     redirect: false,
     failedPost: false
   };
@@ -58,12 +58,12 @@ export default class Module extends Component {
   };
 
   handleFileChange = selectorFiles => {
-    this.setState({ moduleFiles: selectorFiles })
+    this.setState({ moduleFile: selectorFiles[0] })
     console.log(selectorFiles);
   }
 
   saveModule = (postBody) => {
-    console.log("My name is: "+ this.state.moduleName+ " and my desc is " + this.state.moduleDescription +" and my files are "+ this.state.moduleFiles)
+    console.log("My name is: "+ this.state.moduleName+ " and my desc is " + this.state.moduleDescription +" and my files are "+ this.state.moduleFile)
     // "jcr:title"=
     // name="jcr:description"  
     // name="asciidoc" type=file
@@ -77,9 +77,11 @@ export default class Module extends Component {
       "jcr:primaryType": 'pant:module',
       "jcr:title": this.state.moduleName,
       "jcr:description": this.state.moduleDescription,
+      "asciidoc": this.state.moduleFile.name,
       "sling:resourceType": 'pantheon/modules',
-      "pant:originalName": "",
-      "asciidoc@TypeHint": 'nt:file'
+      "pant:originalName": "??",
+      "asciidoc@TypeHint": 'nt:file',
+      "asciidoc/jcr:content/jcr:mimeType": "text/x-asciidoc"
     }
 
     fetch('http://localhost:8080/content/modules/', {
@@ -103,6 +105,5 @@ export default class Module extends Component {
       return ""
     }
   }
-
 
 }

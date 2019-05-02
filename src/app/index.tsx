@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { TextInput, Label, BackgroundImage, BackgroundImageSrc, Button } from '@patternfly/react-core';
+import { TextInput, Label, BackgroundImage, BackgroundImageSrc } from '@patternfly/react-core';
 import { Table, TableHeader, TableBody } from '@patternfly/react-table';
 import '@app/app.css';
 import xs from '@assets/images/pfbg_576.jpg';
@@ -8,7 +8,6 @@ import sm from '@assets/images/pfbg_768.jpg';
 import sm2x from '@assets/images/pfbg_768@2x.jpg';
 import lg from '@assets/images/pfbg_1200.jpg';
 import filter from '@assets/images/background-filter.svg';
-import { Redirect } from 'react-router-dom'
 
 const images = {
   [BackgroundImageSrc.xs]: xs,
@@ -25,10 +24,7 @@ export default class Index extends Component {
     redirectLocation: '',
     input: '',
     columns: ['Name', 'Description', 'Source Type', 'Source Name', 'Upload Time'],
-    data: [{
-      "pant:transientSource": "modules", "jcr:created": 1554823602107, "jcr:createdBy": "admin", "jcr:description": "Red Hat",
-      "name": "red_hat", "sling:resourceType": "pantheon/modules", "jcr:primaryType": "pant:module", "jcr:title": "Red Hat", "pant:transientPath": "modules/Red_Hat"
-    }]
+    data: [{"jcr:created": '', "name": "red_hat","jcr:title": "Search is case sensitive. Enter '*' for all modules.", "jcr:description": "", "sling:resourceType": "", "pant:transientSource":""}]
   };
   public render() {
     const { columns, input } = this.state;
