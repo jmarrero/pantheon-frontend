@@ -24,6 +24,7 @@ export default class Module extends Component {
     moduleDescription: '',
     moduleFile: File,
     redirect: false,
+    login: false,
     failedPost: false
   };
 
@@ -38,6 +39,7 @@ export default class Module extends Component {
             <TextInput id="module-description" type="text" placeholder="Module Description" value={moduleDescription} onChange={this.handleTextInputChange2} />
             <input id="input" className="input-file" color="#dddddd" type="file" onChange={(e) => this.handleFileChange(e.target.files)} />
             <div>
+              {this.loginRedirect()}
               {this.renderRedirect()}
               <Button onClick={this.saveModule}>Save</Button>
             </div>
@@ -89,6 +91,9 @@ export default class Module extends Component {
       if (response.status == 201) {
         console.log(" Works " + response.status)
         this.setState({ redirect: true })
+      } else  if (response.status == 500) {
+        console.log(" Needs login " + response.status)
+        this.setState({ login: true })
       } else {
         console.log(" Failed " + response.status)
         this.setState({ failedPost: true })
@@ -104,4 +109,11 @@ export default class Module extends Component {
     }
   }
 
+  loginRedirect = () => {
+    if (this.state.login) {
+      return <Redirect to='/system/sling/login.html' />
+    } else {
+      return ""
+    }
+  }
 }
