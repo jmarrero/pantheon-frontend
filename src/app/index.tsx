@@ -41,7 +41,7 @@ export default class Index extends Component {
             </Table>
             {this.renderPreview()}
             {this.state.data.map(data => (
-              <Table aria-label="table-data" key={data.name} rows={[[data["jcr:title"], data["jcr:description"], data["sling:resourceType"], data["pant:transientSource"], data["jcr:created"].toString()]]} cells={columns} >
+              <Table id="table-rows" aria-label="table-data" key={data.name} rows={[[data["jcr:title"], data["jcr:description"], data["sling:resourceType"], data["pant:transientSource"], data["jcr:created"].toString()]]} cells={columns} >
                 <TableBody onRowClick={() => this.setPreview(data.name)} />
               </Table>
             ))}
