@@ -1,25 +1,19 @@
 import React from 'react';
-import App from '@app/index';
+import Index from '@app/index';
+
 import { mount, shallow } from 'enzyme';
-import { Alert, Button } from '@patternfly/react-core';
+import { Label } from '@patternfly/react-core';
 
 describe('App tests', () => {
   test('should render default App component', () => {
-    const view = shallow(<App />);
+    const view = shallow(<Index />);
     expect(view).toMatchSnapshot();
   });
 
-  it('should render a dismiss button', () => {
-    const wrapper = mount(<App />);
-    const button = wrapper.find(Button);
+  it('should render a search Label', () => {
+    const wrapper = mount(<Index />);
+    const button = wrapper.find(Label);
     expect(button.exists()).toBe(true)
   });
 
-  it('should hide the alert when clicking the dismiss button', () => {
-    const wrapper = mount(<App />);
-    const button = wrapper.find(Button);
-    expect(wrapper.find(Alert).exists()).toBe(true);
-    button.simulate('click');
-    expect(wrapper.find(Alert).exists()).toBe(false);
-  });
 });

@@ -9,17 +9,17 @@
   margin-top: var(--myApp-global--spacer--md);
 }
 
-.notification-container {
-  flex: 0 1 auto;
-}
-
-li {
-  float: left;
-}
-
 a {
-  display: block;
+  float: top;
+  display: flex;
   padding: 8px;
+  justify-content: center;
+}
+
+ul {
+  display: flex;
+  justify-content: center;
+  flex-direction:row;
   background-color: #dddddd;
 }
 
@@ -27,6 +27,28 @@ a {
   color: #dddddd;
 }
 
-#table-rows:hover * {
+.sp-prop {
+  font-weight: bold
+}
+
+.sp-prop-nosort {
+  font-weight: bold
+}
+
+.sp-prop:hover {
+  font-weight: bold;
+  color: #99ccff;
+}
+
+#data-rows:hover * {
   background: #99ccff;
+}
+
+body {
+  background-color: rgb(36, 36, 36);
+}
+
+.row-view {
+  display:flex; 
+  flex-direction:row;
 }

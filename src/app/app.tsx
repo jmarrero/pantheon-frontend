@@ -16,7 +16,7 @@ function App() {
 }
 
 function Home() {
-  return <h2>Home</h2>;
+  return <h2>Search</h2>;
 }
 
 function New() {
@@ -27,7 +27,7 @@ function Header() {
   return (
     <ul>
       <li>
-        <Link to="/">Home</Link>
+        <Link to="/">Search</Link>
       </li>
       <li>
         <Link to="/new-module">New Module</Link>

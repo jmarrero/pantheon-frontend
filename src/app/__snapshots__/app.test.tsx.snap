@@ -2,40 +2,196 @@
 
 exports[`App tests should render default App component 1`] = `
 <Fragment>
-  <BackgroundImage
-    className=""
-    src={
-      Object {
-        "filter": "test-file-stub#image_overlay",
-        "lg": "test-file-stub",
-        "sm": "test-file-stub",
-        "sm2x": "test-file-stub",
-        "xs": "test-file-stub",
-        "xs2x": "test-file-stub",
-      }
-    }
-  />
   <div
     className="app-container"
   >
-    <div
-      className="notification-container"
-    >
-      <Alert
-        action={
-          <AlertActionCloseButton
-            aria-label=""
-            className=""
-            onClose={[Function]}
-          />
-        }
-        className=""
-        title="Setup Complete"
-        variant="success"
-        variantLabel={null}
+    <div>
+      <div
+        className="row-view"
       >
-        You have successfully launched your patternfly starter project.
-      </Alert>
+        <Label
+          className=""
+          isCompact={false}
+        >
+          Search:
+        </Label>
+        <TextInput
+          aria-label={null}
+          className=""
+          id="search"
+          isDisabled={false}
+          isReadOnly={false}
+          isRequired={false}
+          isValid={true}
+          onChange={[Function]}
+          onKeyDown={[Function]}
+          type="text"
+        />
+      </div>
+      <DataList
+        aria-label="Simple data list example"
+        className=""
+      >
+        <DataListItem
+          aria-labelledby="simple-item1"
+          className=""
+          isExpanded={false}
+        >
+          <DataListItemRow
+            className=""
+            id="data-rows-header"
+          >
+            <DataListItemCells
+              className=""
+              dataListCells={
+                Array [
+                  <DataListCell
+                    alignRight={false}
+                    className=""
+                    isFilled={true}
+                    isIcon={false}
+                    onClick={[Function]}
+                    width={4}
+                  >
+                    <span
+                      className="sp-prop"
+                      id="span-name"
+                    >
+                      Name
+                    </span>
+                  </DataListCell>,
+                  <DataListCell
+                    alignRight={false}
+                    className=""
+                    isFilled={true}
+                    isIcon={false}
+                    onClick={[Function]}
+                    width={4}
+                  >
+                    <span
+                      className="sp-prop"
+                      id="span-description"
+                    >
+                      Description
+                    </span>
+                  </DataListCell>,
+                  <DataListCell
+                    alignRight={false}
+                    className=""
+                    isFilled={true}
+                    isIcon={false}
+                    width={1}
+                  >
+                    <span
+                      className="sp-prop-nosort"
+                      id="span-source-type"
+                    >
+                      Source Type
+                    </span>
+                  </DataListCell>,
+                  <DataListCell
+                    alignRight={false}
+                    className=""
+                    isFilled={true}
+                    isIcon={false}
+                    width={1}
+                  >
+                    <span
+                      className="sp-prop-nosort"
+                      id="span-source-name"
+                    >
+                      Source Name
+                    </span>
+                  </DataListCell>,
+                  <DataListCell
+                    alignRight={false}
+                    className=""
+                    isFilled={true}
+                    isIcon={false}
+                    onClick={[Function]}
+                    width={1}
+                  >
+                    <span
+                      className="sp-prop"
+                      id="span-upload-time"
+                    >
+                      Upload Time
+                    </span>
+                  </DataListCell>,
+                ]
+              }
+            />
+          </DataListItemRow>
+          <DataListItemRow
+            className=""
+            id="data-rows"
+            key=""
+            onClick={[Function]}
+          >
+            <DataListItemCells
+              className=""
+              dataListCells={
+                Array [
+                  <DataListCell
+                    alignRight={false}
+                    className=""
+                    isFilled={true}
+                    isIcon={false}
+                    width={4}
+                  >
+                    
+                  </DataListCell>,
+                  <DataListCell
+                    alignRight={false}
+                    className=""
+                    isFilled={true}
+                    isIcon={false}
+                    width={4}
+                  >
+                    
+                  </DataListCell>,
+                  <DataListCell
+                    alignRight={false}
+                    className=""
+                    isFilled={true}
+                    isIcon={false}
+                    width={1}
+                  />,
+                  <DataListCell
+                    alignRight={false}
+                    className=""
+                    isFilled={true}
+                    isIcon={false}
+                    width={1}
+                  >
+                    
+                  </DataListCell>,
+                  <DataListCell
+                    alignRight={false}
+                    className=""
+                    isFilled={true}
+                    isIcon={false}
+                    width={1}
+                  >
+                    
+                  </DataListCell>,
+                ]
+              }
+            />
+          </DataListItemRow>
+        </DataListItem>
+      </DataList>
+      <div
+        className="notification-container"
+      >
+        <Alert
+          action={null}
+          className=""
+          title="Search is case sensitive. Type '*' and press 'Enter' for all modules."
+          variant="info"
+          variantLabel={null}
+        />
+      </div>
     </div>
   </div>
 </Fragment>

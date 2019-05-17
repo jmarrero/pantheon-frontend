@@ -1,22 +1,7 @@
 import React, { Component } from 'react';
-import { Button, BackgroundImage, BackgroundImageSrc, TextInput } from '@patternfly/react-core';
+import { Button, Alert, AlertActionCloseButton, TextInput } from '@patternfly/react-core';
 import '@app/app.css';
-import xs from '@assets/images/pfbg_576.jpg';
-import xs2x from '@assets/images/pfbg_576@2x.jpg';
-import sm from '@assets/images/pfbg_768.jpg';
-import sm2x from '@assets/images/pfbg_768@2x.jpg';
-import lg from '@assets/images/pfbg_1200.jpg';
-import filter from '@assets/images/background-filter.svg';
 import { Redirect } from 'react-router-dom'
-
-const images = {
-  [BackgroundImageSrc.xs]: xs,
-  [BackgroundImageSrc.xs2x]: xs2x,
-  [BackgroundImageSrc.sm]: sm,
-  [BackgroundImageSrc.sm2x]: sm2x,
-  [BackgroundImageSrc.lg]: lg,
-  [BackgroundImageSrc.filter]: `${filter}#image_overlay`
-};
 
 export default class Module extends Component {
   public state = {
@@ -25,16 +10,28 @@ export default class Module extends Component {
     moduleFile: File,
     redirect: false,
     login: false,
-    failedPost: false
+    failedPost: false,
+    isMissingFields: false
   };
 
   public render() {
-    const { moduleName, moduleDescription } = this.state;
+    const { moduleName, moduleDescription, isMissingFields } = this.state;
     return (
       <React.Fragment>
-        <BackgroundImage src={images} />
+
         <div className="app-container">
+
           <div>
+          {isMissingFields && (
+            <div className="notification-container">
+              <Alert
+                variant="warning"
+                  title="A module name and choosing a file is required."
+                action={<AlertActionCloseButton onClose={this.dismissNotification} />}
+              >
+              </Alert>
+            </div>
+          )}
             <TextInput id="module-name" type="text" placeholder="Module Name" value={moduleName} onChange={this.handleTextInputChange1} />
             <TextInput id="module-description" type="text" placeholder="Module Description" value={moduleDescription} onChange={this.handleTextInputChange2} />
             <input id="input" className="input-file" color="#dddddd" type="file" onChange={(e) => this.handleFileChange(e.target.files)} />
@@ -65,9 +62,10 @@ export default class Module extends Component {
   }
 
   saveModule = (postBody) => {
-    console.log("My name is: " + this.state.moduleName + " and my desc is " + this.state.moduleDescription + " and my files are " + this.state.moduleFile)
-
-
+    console.log("My data is: " + this.state.moduleName + " and my desc is " + this.state.moduleDescription + " and my files are " + this.state.moduleFile)
+    if (this.state.moduleName == "" || this.state.moduleFile[0] == undefined){
+      this.setState({ isMissingFields: true })
+    } else {
     const hdrs = {
       'cache-control': 'no-cache',
       'Accept': 'application/json'
@@ -83,12 +81,12 @@ export default class Module extends Component {
     formData.append("asciidoc/jcr:content/jcr:mimeType", "text/x-asciidoc")
     formData.append("asciidoc", blob)
 
-    fetch('http://localhost:8080/content/modules/' + this.state.moduleName, {
+    fetch('/content/modules/' + this.state.moduleName, {
       method: 'post',
       headers: hdrs,
       body: formData
     }).then(response => {
-      if (response.status == 201) {
+      if (response.status == 201 || response.status == 200) {
         console.log(" Works " + response.status)
         this.setState({ redirect: true })
       } else  if (response.status == 500) {
@@ -99,6 +97,7 @@ export default class Module extends Component {
         this.setState({ failedPost: true })
       }
     });
+   }
   }
 
   renderRedirect = () => {
@@ -111,9 +110,14 @@ export default class Module extends Component {
 
   loginRedirect = () => {
     if (this.state.login) {
-      return <Redirect to='/system/sling/login.html' />
+      return window.location.assign("/system/sling/login.html");
     } else {
       return ""
     }
   }
+
+  private dismissNotification = () => {
+    this.setState({ isMissingFields: false });
+  };
+
 }
